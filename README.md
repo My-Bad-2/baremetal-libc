@@ -24,7 +24,7 @@ add_subdirectory(libs/llvm-libc)
 
 # 3. Link the library to your kernel/executable
 # Replace 'your-kernel-target' with the name of your executable
-target_link_libraries(your-kernel-target PRIVATE llvm-libc clang_rt-builtins)
+target_link_libraries(your-kernel-target PRIVATE llvm-libc ${CRT_LIBRARY_PATH}/libclang_rt.builtins.a)
 ```
 *Note: The available options for `LIBC_ARCHITECTURE` depend on the folders provided in the `lib/` directory of this repo.*
 
