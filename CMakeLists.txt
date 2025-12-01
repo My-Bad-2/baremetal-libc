@@ -10,7 +10,7 @@ if(LIBC_ARCHITECTURE STREQUAL "x86_64")
 endif()
 
 set(LIB_NAME "c") 
-set(COMPILER_RT_NAME "libclang_rt.builtins")
+set(COMPILER_RT_NAME "clang_rt.builtins")
 
 add_library(llvm-libc STATIC IMPORTED GLOBAL)
 add_library(compiler_rt-builtins STATIC IMPORTED GLOBAL)
