@@ -28,6 +28,6 @@ set_property(
 set(CRTBEGIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/${LIBC_DIR}/crtbegin.o" CACHE INTERNAL "")
 set(CRTEND_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/${LIBC_DIR}/crtend.o" CACHE INTERNAL "")
 
-target_include_directories(llvm_libc INTERFACE
+target_include_directories(llvm-libc INTERFACE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
