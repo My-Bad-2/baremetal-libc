@@ -58,6 +58,9 @@ cmake -G Ninja -B build -S runtimes \
   -DLIBC_TARGET_OS=baremetal \
   -DLIBC_TARGET_TRIPLE=x86_64-unknown-none-elf \
   -DCMAKE_BUILD_TYPE=Release \
+  -DLIBC_CPU_FEATURES="" \
+  -DCMAKE_CXX_FLAGS="-mno-sse -mno-sse2 -mno-avx -msoft-float" \
+  -DCMAKE_C_FLAGS="-mno-sse -mno-sse2 -mno-avx -msoft-float" \
   -DCMAKE_INSTALL_PREFIX=$PREFIX
 
 # Build the library
@@ -73,9 +76,10 @@ To enable full functionality (especially for I/O and memory allocation functions
 ### Required Hooks
 You must implement the following functions in your kernel and link them against this library:
 
-| Function | Hook |
-| :--- | :--- |
-| TBA | TBA |
+| Hook | Type (Function/Variable) | Function Signature/Variable Type | Note |
+| :--- | :--- | :--- | :--- |
+| __llvm_libc_stdio_write | Function | size_t __llvm_libc_stdio_write(void* cookie, const char* data, size_t size) | Pass the data to Kernel UART/console and return size |
+| __llvm_libc_stdout_cookie | Variable | void* | A Dummy Variable `(void*)1` |
 
 Failure to implement these hooks may result in linker errors or undefined behavior during runtime.
 
