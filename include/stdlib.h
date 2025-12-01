@@ -35,8 +35,6 @@ int abs(int) __NOEXCEPT;
 
 void *aligned_alloc(size_t, size_t) __NOEXCEPT;
 
-double atof(const char *__restrict) __NOEXCEPT;
-
 int atoi(const char *) __NOEXCEPT;
 
 long atol(const char *) __NOEXCEPT;
@@ -75,21 +73,9 @@ void *realloc(void *, size_t) __NOEXCEPT;
 
 void srand(unsigned int) __NOEXCEPT;
 
-double strtod(const char *__restrict, char **__restrict) __NOEXCEPT;
-
-double strtod_l(const char *__restrict, char **__restrict, locale_t) __NOEXCEPT;
-
-float strtof(const char *__restrict, char **__restrict) __NOEXCEPT;
-
-float strtof_l(const char *__restrict, char **__restrict, locale_t) __NOEXCEPT;
-
 long strtol(const char *__restrict, char **__restrict, int) __NOEXCEPT;
 
 long strtol_l(const char *__restrict, char **__restrict, int, locale_t) __NOEXCEPT;
-
-long double strtold(const char *__restrict, char **__restrict) __NOEXCEPT;
-
-long double strtold_l(const char *__restrict, char **__restrict, locale_t) __NOEXCEPT;
 
 long long strtoll(const char *__restrict, char **__restrict, int) __NOEXCEPT;
 
