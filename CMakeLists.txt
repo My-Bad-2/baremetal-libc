@@ -16,7 +16,7 @@ add_library(llvm-libc STATIC IMPORTED GLOBAL)
 add_library(compiler_rt-builtins STATIC IMPORTED GLOBAL)
 
 set_property(
-    TARGET llvm_libc PROPERTY 
+    TARGET llvm-libc PROPERTY 
     IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/lib/${LIBC_DIR}/lib${LIB_NAME}.a"
 )
 
