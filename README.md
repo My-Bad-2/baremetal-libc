@@ -1,6 +1,6 @@
 # Baremetal LLVM-Libc Prebuilts
 
-This repository provides prebuilt, static libraries of **llvm-libc** specifically configured for bare-metal environment.
+This repository provides prebuilt, static libraries of **llvm-libc**, **Clang-RT builtins**, and **CRT (C Runtime) object files** specifically configured for bare-metal environment.
 
 For those interested in building the library from scratch, this repository also includes the necessary patch files and build instructions.
 
@@ -24,7 +24,7 @@ add_subdirectory(libs/llvm-libc)
 
 # 3. Link the library to your kernel/executable
 # Replace 'your-kernel-target' with the name of your executable
-target_link_libraries(your-kernel-target PRIVATE llvm_libc)
+target_link_libraries(your-kernel-target PRIVATE llvm-libc clang_rt-builtins)
 ```
 *Note: The available options for `LIBC_ARCHITECTURE` depend on the folders provided in the `lib/` directory of this repo.*
 
@@ -79,8 +79,38 @@ You must implement the following functions in your kernel and link them against 
 
 Failure to implement these hooks may result in linker errors or undefined behavior during runtime.
 
+### C Runtime Compilation Configuration
+The C Runtime (Compiler-RT) was configured with
+
+```bash
+export PREFIX="/path/to/install/dir"
+cmake compiler-rt -B build-rt \
+    -G Ninja \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_C_COMPILER_TARGET="x86_64-unknown-none-elf" \
+    -DCMAKE_ASM_COMPILER_TARGET="x86_64-unknown-none-elf" \
+    -DCMAKE_AR=$(which llvm-ar) \
+    -DCMAKE_NM=$(which llvm-nm) \
+    -DCMAKE_RANLIB=$(which llvm-ranlib) \
+    -DCOMPILER_RT_BUILD_BUILTINS=ON \
+    -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+    -DCOMPILER_RT_BUILD_XRAY=OFF \
+    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
+    -DCOMPILER_RT_BUILD_PROFILE=OFF \
+    -DCOMPILER_RT_BUILD_MEMPROF=OFF \
+    -DCOMPILER_RT_BUILD_ORC=OFF \
+    -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
+    -DCOMPILER_RT_BAREMETAL_BUILD=ON \
+    -DCOMPILER_RT_OS_DIR="baremetal" \
+    -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY \
+    -DCMAKE_C_FLAGS="-ffreestanding -O2 -nostdlib" \
+    -DCMAKE_CXX_FLAGS="-ffreestanding -O2 -nostdlib" \
+    -DCMAKE_INSTALL_PREFIX=$PREFIX
+```
+
 ## Credits
-LLVM Project: This repository is based on the llvm-libc project. Massive credit goes to the LLVM developers and contributors for creating a modern, high-performance C standard library.
+LLVM Project: This repository is based on the LLVM's libc, compiler-rt project. Massive credit goes to the LLVM developers and contributors.
 
 [License](https://github.com/llvm/llvm-project/blob/main/LICENSE.TXT)
 
